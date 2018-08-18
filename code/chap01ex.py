@@ -20,7 +20,7 @@ def main(script):
     script: string script name
     """
     preg = nsfg.ReadFemPreg()
-    preg_map = nsfg.MakePregMap(preg)
+    # preg_map = nsfg.MakePregMap(preg)
 
     # case_id = 10229
     # indices = preg_map[case_id]
@@ -35,11 +35,16 @@ def main(script):
 
 
 
-    # df['totalwgt_kg'] = 
+    # ======================================================
+    preg['totalwgt_kg'] = preg['totalwgt_lb'] * 0.45359237
+    # print( preg.totalwgt_kg.mean() )
+    # ======================================================
 
+    resp = nsfg.ReadFemResp()
 
-
-
+    print( preg[(preg.caseid==5012) & (preg.pregordr==1)].totalwgt_kg )
+    
+    
 
     # ======================================================
     # preg.loc[preg.prglngth.astype(int) <= 13, 'prglngth'] = 1
