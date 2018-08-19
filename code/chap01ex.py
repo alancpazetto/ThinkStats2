@@ -13,14 +13,42 @@ import sys
 import nsfg
 import thinkstats2
 
+def ValidatePregNum(resp):
+    
+    preg = nsfg.ReadFemPreg()
+    preg_map = nsfg.MakePregMap(preg)
+
+    for index, pregnum in resp.pregnum.items():
+        caseid = resp.caseid[index]
+        indices = preg_map[caseid]
+        
+        if len(indices) != pregnum:
+            print(caseid, len(indices), pregnum)
+            return False
+    
+    return True
 
 def main(script):
     """Tests the functions in this module.
 
     script: string script name
     """
-    preg = nsfg.ReadFemPreg()
+    # preg = nsfg.ReadFemPreg()
     # preg_map = nsfg.MakePregMap(preg)
+
+    resp = nsfg.ReadFemResp()
+
+    # resp.replace(0, np.nan, inplace=True)
+    # resp.loc[ resp.pregnum > 7, 'pregnum' ] = 7
+    # https://www.icpsr.umich.edu/nsfg6/Controller?displayPage=labelDetails&fileCode=FEM&section=R&subSec=7869&srtLabel=606835
+
+    assert( len(resp) == 7643 )
+    assert( resp.pregnum.value_counts()[1] == 1267 )
+    assert( ValidatePregNum(resp) )
+
+
+
+    # print(resp.pregnum.value_counts().sort_index())
 
     # case_id = 10229
     # indices = preg_map[case_id]
@@ -36,13 +64,11 @@ def main(script):
 
 
     # ======================================================
-    preg['totalwgt_kg'] = preg['totalwgt_lb'] * 0.45359237
+    # preg['totalwgt_kg'] = preg['totalwgt_lb'] * 0.45359237
     # print( preg.totalwgt_kg.mean() )
     # ======================================================
 
-    resp = nsfg.ReadFemResp()
-
-    print( preg[(preg.caseid==5012) & (preg.pregordr==1)].totalwgt_kg )
+    # print( preg[(preg.caseid==5012) & (preg.pregordr==1)].totalwgt_kg )
     
     
 
